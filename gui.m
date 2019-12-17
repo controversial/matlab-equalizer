@@ -245,13 +245,19 @@ classdef gui < matlab.apps.AppBase
 
             % The user presses chooseFileButton to pick a file
             function chooseFileCallback(~, ~)
+                % Ask user to pick an audio file
                 [file, path] = uigetfile({'*.mp3';'*.wav'});
+                % Update the filename label
                 app.FilenameLabel.Text=file;
-                disp(strcat(path, file));
-
+                % Read audio file
                 [audio, rate]=audioread(strcat(path, file));
                 app.inputFileAudio = audio;
                 app.inputFileSampleRate = rate;
+                % Display waveform and FFT in plots
+                audiofft = fft(audio, length(audio));
+                audiofreqs = rate * (0:floor(length(audio)/2)) / length(audio);
+                plot(app.UIAxes_1_1, (1:1:length(audio)), audio, '-r');
+                plot(app.UIAxes_1_2, audiofreqs, abs(audiofft(1:floor(length(audio)/2+1))), '-r');
             end
 
             % The user moves one of the equalizer sliders to change the
