@@ -264,6 +264,8 @@ classdef gui < matlab.apps.AppBase
 
             app.ComputeButton.ButtonPushedFcn = @computeCallback;
 
+            app.PlayButton.ButtonPushedFcn = @playPauseCallback;
+
             % The user presses chooseFileButton to pick a file
             function chooseFileCallback(~, ~)
                 % Ask user to pick an audio file
@@ -323,6 +325,18 @@ classdef gui < matlab.apps.AppBase
 
                 function audioplayerCallback(~, ~)
                     app.PlaybarSlider.Value = (app.player.CurrentSample / app.player.TotalSamples) * 100;
+                end
+            end
+
+            function playPauseCallback(~, ~)
+                if ~isplaying(app.player)
+                    resume(app.player);
+                    app.PlayButton.Text = "Pause";
+                    app.PlaybarSlider.Enable = "on";
+                else
+                    pause(app.player);
+                    app.PlayButton.Text = "Play";
+                    app.PlaybarSlider.Enable = "off";
                 end
             end
         end
