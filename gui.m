@@ -21,7 +21,7 @@ classdef gui < matlab.apps.AppBase
         AttenSlider5Label matlab.ui.control.Label
         AttenSlider5      matlab.ui.control.Slider
 
-        ComputeButton  matlab.ui.control.Button
+        ComputeButton     matlab.ui.control.Button
         PlayButton        matlab.ui.control.Button
         PlaybarSlider     matlab.ui.control.Slider
 
@@ -38,6 +38,7 @@ classdef gui < matlab.apps.AppBase
         inputFileAudio
         processedAudio
         audioRate
+        player
         attenuations = [1 1 1 1 1]
     end
 
@@ -316,6 +317,13 @@ classdef gui < matlab.apps.AppBase
                 % Enable UI controls
                 app.PlayButton.Enable = 'on';
                 app.PlaybarSlider.Enable = 'on';
+                % Initialize audio player
+                app.player = audioplayer(app.processedAudio, app.audioRate);
+                app.player.TimerFcn = @audioplayerCallback;
+
+                function audioplayerCallback(~, ~)
+                    app.PlaybarSlider.Value = (app.player.CurrentSample / app.player.TotalSamples) * 100;
+                end
             end
         end
     end
