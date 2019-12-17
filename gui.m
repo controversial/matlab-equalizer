@@ -309,6 +309,8 @@ classdef gui < matlab.apps.AppBase
                 % date
                 app.PlayButton.Enable = 'off';
                 app.PlaybarSlider.Enable = 'off';
+                cla(app.UIAxes_2_1);
+                cla(app.UIAxes_2_2);
             end
 
             % The user presses "Compute processed audio"
