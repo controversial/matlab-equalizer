@@ -5,8 +5,11 @@ classdef gui < matlab.apps.AppBase
         UIFigure          matlab.ui.Figure
         GridLayout        matlab.ui.container.GridLayout
         LeftPanel         matlab.ui.container.Panel
-        PlaybarSlider     matlab.ui.control.Slider
-        PlayButton        matlab.ui.control.Button
+        
+        TitleLabel        matlab.ui.control.Label
+        FilenameLabel     matlab.ui.control.Label
+        ChooseFileButton  matlab.ui.control.Button
+
         AttenSlider1Label matlab.ui.control.Label
         AttenSlider1      matlab.ui.control.Slider
         AttenSlider2Label matlab.ui.control.Label
@@ -17,9 +20,11 @@ classdef gui < matlab.apps.AppBase
         AttenSlider4      matlab.ui.control.Slider
         AttenSlider5Label matlab.ui.control.Label
         AttenSlider5      matlab.ui.control.Slider
-        TitleLabel        matlab.ui.control.Label
-        ChooseFileButton  matlab.ui.control.Button
-        FilenameLabel     matlab.ui.control.Label
+
+        ComputeButton  matlab.ui.control.Button
+        PlayButton        matlab.ui.control.Button
+        PlaybarSlider     matlab.ui.control.Slider
+
         RightPanel        matlab.ui.container.Panel
         UIAxes_1_1        matlab.ui.control.UIAxes
         UIAxes_2_1        matlab.ui.control.UIAxes
@@ -188,6 +193,11 @@ classdef gui < matlab.apps.AppBase
             app.FilenameLabel.HorizontalAlignment = 'right';
             app.FilenameLabel.Position = [125 353 98 22];
             app.FilenameLabel.Text = 'No file selected';
+            
+            % Create ComputeButton
+            app.ComputeButton = uibutton(app.LeftPanel, 'push');
+            app.ComputeButton.Position = [18 90 292 22];
+            app.ComputeButton.Text = 'Compute processed audio';
 
             % Create RightPanel
             app.RightPanel = uipanel(app.GridLayout);
