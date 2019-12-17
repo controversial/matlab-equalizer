@@ -234,7 +234,6 @@ classdef gui < matlab.apps.AppBase
             app.UIAxes_1_2.XLim = [0 3000];
             app.UIAxes_1_2.XTick = [0 200 500 1000 2000 5000];
             app.UIAxes_1_2.XTickLabel = {'0'; '200'; '500'; '1000'; '2000'; '5000'};
-            app.UIAxes_1_2.YTick = [0 1];
             app.UIAxes_1_2.Position = [300 205 250 170];
 
             % Create UIAxes_2_2
@@ -245,7 +244,6 @@ classdef gui < matlab.apps.AppBase
             app.UIAxes_2_2.XLim = [0 3000];
             app.UIAxes_2_2.XTick = [0 200 500 1000 2000 5000];
             app.UIAxes_2_2.XTickLabel = {'0'; '200'; '500'; '1000'; '2000'; '5000'};
-            app.UIAxes_2_2.YTick = [0 1];
             app.UIAxes_2_2.Position = [300 24 250 170];
 
             % Show the figure after all components are created
