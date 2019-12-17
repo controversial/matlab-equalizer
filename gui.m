@@ -95,11 +95,13 @@ classdef gui < matlab.apps.AppBase
             app.PlaybarSlider.MajorTickLabels = {'0:00', 'End', ''};
             app.PlaybarSlider.MinorTicks = [];
             app.PlaybarSlider.Position = [120 57 180 3];
+            app.PlaybarSlider.Enable = 'off';
 
             % Create PlayButton
             app.PlayButton = uibutton(app.LeftPanel, 'push');
             app.PlayButton.Position = [18 48 75 22];
             app.PlayButton.Text = {'Play'; ''};
+            app.PlayButton.Enable = 'off';
 
             % Create AttenSlider1Label
             app.AttenSlider1Label = uilabel(app.LeftPanel);
@@ -115,6 +117,7 @@ classdef gui < matlab.apps.AppBase
             app.AttenSlider1.MinorTicks = [0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2];
             app.AttenSlider1.Position = [20 164 3 150];
             app.AttenSlider1.Value = 1;
+            app.AttenSlider1.Enable = 'off';
 
             % Create AttenSlider2Label
             app.AttenSlider2Label = uilabel(app.LeftPanel);
@@ -130,6 +133,7 @@ classdef gui < matlab.apps.AppBase
             app.AttenSlider2.MinorTicks = [0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2];
             app.AttenSlider2.Position = [84 164 3 150];
             app.AttenSlider2.Value = 1;
+            app.AttenSlider2.Enable = 'off';
 
             % Create AttenSlider3Label
             app.AttenSlider3Label = uilabel(app.LeftPanel);
@@ -145,6 +149,7 @@ classdef gui < matlab.apps.AppBase
             app.AttenSlider3.MinorTicks = [0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2];
             app.AttenSlider3.Position = [147 164 3 150];
             app.AttenSlider3.Value = 1;
+            app.AttenSlider3.Enable = 'off';
 
             % Create AttenSlider4Label
             app.AttenSlider4Label = uilabel(app.LeftPanel);
@@ -160,6 +165,7 @@ classdef gui < matlab.apps.AppBase
             app.AttenSlider4.MinorTicks = [0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2];
             app.AttenSlider4.Position = [209 164 3 150];
             app.AttenSlider4.Value = 1;
+            app.AttenSlider4.Enable = 'off';
 
             % Create AttenSlider5Label
             app.AttenSlider5Label = uilabel(app.LeftPanel);
@@ -175,6 +181,7 @@ classdef gui < matlab.apps.AppBase
             app.AttenSlider5.MinorTicks = [0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2];
             app.AttenSlider5.Position = [271 164 3 150];
             app.AttenSlider5.Value = 1;
+            app.AttenSlider5.Enable = 'off';
 
             % Create TitleLabel
             app.TitleLabel = uilabel(app.LeftPanel);
@@ -198,6 +205,7 @@ classdef gui < matlab.apps.AppBase
             app.ComputeButton = uibutton(app.LeftPanel, 'push');
             app.ComputeButton.Position = [18 90 292 22];
             app.ComputeButton.Text = 'Compute processed audio';
+            app.ComputeButton.Enable = 'off';
 
             % Create RightPanel
             app.RightPanel = uipanel(app.GridLayout);
@@ -268,6 +276,13 @@ classdef gui < matlab.apps.AppBase
                 audiofreqs = rate * (0:floor(length(audio)/2)) / length(audio);
                 plot(app.UIAxes_1_1, (1:1:length(audio)), audio, '-r');
                 plot(app.UIAxes_1_2, audiofreqs, abs(audiofft(1:floor(length(audio)/2+1))), '-r');
+                % Enable UI controls
+                app.AttenSlider1.Enable = 'on';
+                app.AttenSlider2.Enable = 'on';
+                app.AttenSlider3.Enable = 'on';
+                app.AttenSlider4.Enable = 'on';
+                app.AttenSlider5.Enable = 'on';
+                app.ComputeButton.Enable = 'on';
             end
 
             % The user moves one of the equalizer sliders to change the
@@ -281,6 +296,10 @@ classdef gui < matlab.apps.AppBase
                     app.AttenSlider5.Value
                 ];
                 disp(rot90(app.attenuations, 1));
+                % Disable elements because the computed data is now out of
+                % date
+                app.PlayButton.Enable = 'off';
+                app.PlaybarSlider.Enable = 'off';
             end
         end
     end
