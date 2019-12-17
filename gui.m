@@ -301,6 +301,10 @@ classdef gui < matlab.apps.AppBase
                     app.AttenSlider5.Value
                 ];
                 disp(rot90(app.attenuations, 1));
+                % Stop playback
+                stop(app.player);
+                app.PlayButton.Text = "Play";
+                app.PlaybarSlider.Value = 0;
                 % Disable elements because the computed data is now out of
                 % date
                 app.PlayButton.Enable = 'off';
@@ -319,6 +323,12 @@ classdef gui < matlab.apps.AppBase
                 % Enable UI controls
                 app.PlayButton.Enable = 'on';
                 app.PlaybarSlider.Enable = 'on';
+                % Stop previous playback
+                if class(app.player) == "audioplayer"
+                    stop(app.player);
+                    app.PlayButton.Text = "Play";
+                    app.PlaybarSlider.Value = 0;
+                end
                 % Initialize audio player
                 app.player = audioplayer(app.processedAudio, app.audioRate);
                 app.player.TimerFcn = @audioplayerCallback;
