@@ -32,13 +32,14 @@ classdef gui < matlab.apps.AppBase
         onePanelWidth = 576;
         inputFileAudio
         inputFileSampleRate
+        attenuations = [1 1 1 1 1]
     end
 
     % Callbacks that handle component events
     methods (Access = private)
 
         % Changes arrangement of the app based on UIFigure width
-        function updateAppLayout(app, event)
+        function updateAppLayout(app, ~)
             currentFigureWidth = app.UIFigure.Position(3);
             if(currentFigureWidth <= app.onePanelWidth)
                 % Change to a 2x1 grid
@@ -236,8 +237,13 @@ classdef gui < matlab.apps.AppBase
         % Implement app logic (NOT auto-generated)
         function bindComponents(app)
             app.ChooseFileButton.ButtonPushedFcn = @chooseFileCallback;
+            app.AttenSlider1.ValueChangedFcn = @sliderChangedCallback;
+            app.AttenSlider2.ValueChangedFcn = @sliderChangedCallback;
+            app.AttenSlider3.ValueChangedFcn = @sliderChangedCallback;
+            app.AttenSlider4.ValueChangedFcn = @sliderChangedCallback;
+            app.AttenSlider5.ValueChangedFcn = @sliderChangedCallback;
 
-            % The user presses chooseFileButton to create
+            % The user presses chooseFileButton to pick a file
             function chooseFileCallback(~, ~)
                 [file, path] = uigetfile({'*.mp3';'*.wav'});
                 app.FilenameLabel.Text=file;
@@ -246,6 +252,19 @@ classdef gui < matlab.apps.AppBase
                 [audio, rate]=audioread(strcat(path, file));
                 app.inputFileAudio = audio;
                 app.inputFileSampleRate = rate;
+            end
+
+            % The user moves one of the equalizer sliders to change the
+            % settings
+            function sliderChangedCallback(~, ~)
+                app.attenuations = [
+                    app.AttenSlider1.Value
+                    app.AttenSlider2.Value
+                    app.AttenSlider3.Value
+                    app.AttenSlider4.Value
+                    app.AttenSlider5.Value
+                ];
+                disp(app.attenuations);
             end
         end
     end
