@@ -270,7 +270,7 @@ classdef gui < matlab.apps.AppBase
                     app.AttenSlider4.Value
                     app.AttenSlider5.Value
                 ];
-                disp(app.attenuations);
+                disp(rot90(app.attenuations, 1));
             end
         end
     end
