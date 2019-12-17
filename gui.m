@@ -5,7 +5,7 @@ classdef gui < matlab.apps.AppBase
         UIFigure          matlab.ui.Figure
         GridLayout        matlab.ui.container.GridLayout
         LeftPanel         matlab.ui.container.Panel
-        
+
         TitleLabel        matlab.ui.control.Label
         FilenameLabel     matlab.ui.control.Label
         ChooseFileButton  matlab.ui.control.Button
@@ -36,6 +36,7 @@ classdef gui < matlab.apps.AppBase
     properties (Access = private)
         onePanelWidth = 576;
         inputFileAudio
+        processedAudio
         audioRate
         attenuations = [1 1 1 1 1]
     end
@@ -200,7 +201,7 @@ classdef gui < matlab.apps.AppBase
             app.FilenameLabel.HorizontalAlignment = 'right';
             app.FilenameLabel.Position = [125 353 98 22];
             app.FilenameLabel.Text = 'No file selected';
-            
+
             % Create ComputeButton
             app.ComputeButton = uibutton(app.LeftPanel, 'push');
             app.ComputeButton.Position = [18 90 292 22];
@@ -253,11 +254,14 @@ classdef gui < matlab.apps.AppBase
         % Implement app logic (NOT auto-generated)
         function bindComponents(app)
             app.ChooseFileButton.ButtonPushedFcn = @chooseFileCallback;
+
             app.AttenSlider1.ValueChangedFcn = @sliderChangedCallback;
             app.AttenSlider2.ValueChangedFcn = @sliderChangedCallback;
             app.AttenSlider3.ValueChangedFcn = @sliderChangedCallback;
             app.AttenSlider4.ValueChangedFcn = @sliderChangedCallback;
             app.AttenSlider5.ValueChangedFcn = @sliderChangedCallback;
+
+            app.ComputeButton.ButtonPushedFcn = @computeCallback;
 
             % The user presses chooseFileButton to pick a file
             function chooseFileCallback(~, ~)
@@ -298,6 +302,20 @@ classdef gui < matlab.apps.AppBase
                 % date
                 app.PlayButton.Enable = 'off';
                 app.PlaybarSlider.Enable = 'off';
+            end
+
+            % The user presses "Compute processed audio"
+            function computeCallback(~, ~)
+                freqBands = [1 199; 200 499; 500 999; 1000 4999; 5000 20000];
+                app.processedAudio = equalize_func(app.inputFileAudio, app.audioRate, freqBands, app.attenuations);
+                % Display waveform and FFT in plots
+                newfft = fft(app.processedAudio, length(app.processedAudio));
+                audiofreqs = app.audioRate * (0:floor(length(app.processedAudio)/2)) / length(app.processedAudio);
+                plot(app.UIAxes_2_1, (1:1:length(app.processedAudio)), app.processedAudio, '-r');
+                plot(app.UIAxes_2_2, audiofreqs, abs(newfft(1:floor(length(app.processedAudio)/2+1))), '-r');
+                % Enable UI controls
+                app.PlayButton.Enable = 'on';
+                app.PlaybarSlider.Enable = 'on';
             end
         end
     end
