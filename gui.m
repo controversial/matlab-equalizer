@@ -30,6 +30,8 @@ classdef gui < matlab.apps.AppBase
     % Properties that correspond to apps with auto-reflow
     properties (Access = private)
         onePanelWidth = 576;
+        inputFileAudio
+        inputFileSampleRate
     end
 
     % Callbacks that handle component events
@@ -230,6 +232,22 @@ classdef gui < matlab.apps.AppBase
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
         end
+
+        % Implement app logic (NOT auto-generated)
+        function bindComponents(app)
+            app.ChooseFileButton.ButtonPushedFcn = @chooseFileCallback;
+
+            % The user presses chooseFileButton to create
+            function chooseFileCallback(~, ~)
+                [file, path] = uigetfile({'*.mp3';'*.wav'});
+                app.FilenameLabel.Text=file;
+                disp(strcat(path, file));
+
+                [audio, rate]=audioread(strcat(path, file));
+                app.inputFileAudio = audio;
+                app.inputFileSampleRate = rate;
+            end
+        end
     end
 
     % App creation and deletion
@@ -240,6 +258,9 @@ classdef gui < matlab.apps.AppBase
 
             % Create UIFigure and components
             createComponents(app)
+
+            % Set up bindings and logic
+            bindComponents(app)
 
             % Register the app with App Designer
             registerApp(app, app.UIFigure)
