@@ -36,7 +36,7 @@ classdef gui < matlab.apps.AppBase
     properties (Access = private)
         onePanelWidth = 576;
         inputFileAudio
-        inputFileSampleRate
+        audioRate
         attenuations = [1 1 1 1 1]
     end
 
@@ -268,7 +268,7 @@ classdef gui < matlab.apps.AppBase
                 % Read audio file
                 [audio, rate]=audioread(strcat(path, file));
                 app.inputFileAudio = audio;
-                app.inputFileSampleRate = rate;
+                app.audioRate = rate;
                 % Display waveform and FFT in plots
                 audiofft = fft(audio, length(audio));
                 audiofreqs = rate * (0:floor(length(audio)/2)) / length(audio);
